@@ -2,16 +2,16 @@ import os
 from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-#load_dotenv()  # take environment variables from .env
+load_dotenv()  # take environment variables from .env
 
 # reading the env variables :
-#DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")
+DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")
 
 database_name = 'trivia'
 database_path = "postgresql://{}:{}@{}/{}".format(
-    "postgres", "simplePass", "localhost:5432", database_name
+    "postgres", DATABASE_PASSWORD, "localhost:5432", database_name
 )
 
 db = SQLAlchemy()
