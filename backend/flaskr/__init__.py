@@ -133,7 +133,7 @@ def create_app(test_config=None):
     the form will clear and the question will appear at the end of the last page
     of the questions list in the "List" tab.
     """
-    @app.route("/questions", methods=["POST"])
+    @app.route('/questions/create', methods=["POST"])
     def create_question():
         body = request.get_json()
 
@@ -145,6 +145,7 @@ def create_app(test_config=None):
         try:
             question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
             question.insert()
+            print('hi  here')
             selection = Question.query.order_by(Question.id).all()
             current_books = paginate_questions(request, selection)
 
