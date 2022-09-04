@@ -169,28 +169,24 @@ def create_app(test_config=None):
     only question that include that string within their question.
     Try using the word "title" to start.
     """
-    @app.route("/books", methods=["POST"])
-    def create_book():
+    @app.route("/questions", methods=["POST"])
+    def search_question():
         body = request.get_json()
 
-        new_title = body.get("title", None)
-        new_author = body.get("author", None)
-        new_rating = body.get("rating", None)
         search = body.get("search", None)
 
         try:
             if search:
-                selection = Book.query.order_by(Book.id).filter(
-                    Book.title.ilike("%{}%".format(search))
+                selection = Question.query.order_by(Question.id).filter(
+                    Question.question.ilike("%{}%".format(search))
                 )
-                # selection = Book.query.order_by(Book.id).filter(or_(Book.title.ilike('%{}%'.format(search)), Book.author.ilike('%{}%'.format(search))))
-                current_books = paginate_books(request, selection)
+                matching_questions = paginate_questions(request, selection)
 
                 return jsonify(
                     {
                         "success": True,
-                        "books": current_books,
-                        "total_books": len(selection.all()),
+                        "search_results": matching_questions,
+                        "total_found_questions": len(selection.all()),
                     }
                 )
         except:
