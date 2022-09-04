@@ -44,7 +44,7 @@ class TriviaTestCase(unittest.TestCase):
     #----------------------
     # TESTING CATEGORIES RETRIEVAL
     #----------------------
-    '''def test_get_categories(self):
+    def test_get_categories(self):
         res = self.client().get('/categories')
         data = json.loads(res.data)
 
@@ -103,7 +103,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "unprocessable")'''
+        self.assertEqual(data["message"], "unprocessable")
 
     #----------------------
     # TESTING QUESTION CREATION
