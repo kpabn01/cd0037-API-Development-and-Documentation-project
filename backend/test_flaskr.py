@@ -118,7 +118,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data["questions"]))
 
     def test_error_if_question_creation_not_allowed(self):
-        res = self.client().post("/questions/45", json=json={"question":"night?", "answer": "yes", "category": 3, "difficulty": 1})
+        res = self.client().post("/questions/45", json={"question":"night?", "answer": "yes", "category": 3, "difficulty": 1})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 405)
