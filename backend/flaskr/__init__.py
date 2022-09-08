@@ -164,7 +164,6 @@ def create_app(test_config=None):
                 }
             )
         except:
-            raise
             abort(422)
 
     """
@@ -217,9 +216,6 @@ def create_app(test_config=None):
     """
     @app.route('/categories/<int:id>/questions')
     def get_questions_by_category(id):
-        #body = request.get_json()
-        #category = body.get("category", None)
-
         try:
             selection = Question.query.order_by(Question.id).filter(Question.category==id).all()
             if len(selection) == 0:
@@ -237,8 +233,7 @@ def create_app(test_config=None):
                     "current_category": categories[id]
                 }
             )
-        except:
-            raise
+        except AttributeError:
             abort(422)
 
     """
@@ -254,25 +249,21 @@ def create_app(test_config=None):
     """
     @app.route('/quizzes', methods=["POST"])
     def create_quizz():
-        #previous_questions = []
         body = request.get_json()
         previous_questions =  body.get("previous_questions")
         quiz_category = body.get("quiz_category")
 
         try:
-            categories = {}
-            for category in Category.query.all():
-                categories[category.id] = category.type
-                if category.type == quiz_category["type"]:
-                    category_id = category.id
-
-            selection = Question.query.order_by(Question.id).filter(Question.category==category_id).all()
+            category_id = quiz_category["id"]
+            if category_id == 0: # when the category is "ALL"
+                selection = Question.query.order_by(Question.id).filter(Question.category==Question.category).all()
+            else: # any other category
+                selection = Question.query.order_by(Question.id).filter(Question.category==category_id).all()
             question = random.choice(selection)
 
             while question.id in previous_questions:
                 question = random.choice(selection)
 
-            #previous_questions.append(question.id)
             formated_question = question.format()
 
             return jsonify(
@@ -283,7 +274,6 @@ def create_app(test_config=None):
                 }
             )
         except:
-            raise
             abort(422)
 
     """

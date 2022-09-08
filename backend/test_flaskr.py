@@ -152,7 +152,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], True)
         self.assertTrue(len(data["questions"]))
         self.assertTrue(data["total_questions"])
-        self.assertEqual(data["current_category"], categories[data["questions"][0]["category"]] )
+        self.assertEqual(data["current_category"], categories[data["questions"][0]["category"]])
 
     def test_error_if_search_not_processed(self):
         res = self.client().post('/questions/search', json={"search":''})
@@ -191,7 +191,7 @@ class TriviaTestCase(unittest.TestCase):
     #----------------------
     def test_get_questions_to_play_the_quiz(self):
         res = self.client().post('/quizzes',
-                json={'previous_questions': [1, 4, 20, 15], 'quiz_category': 'Sports'})
+                json={"previous_questions": [1, 4, 20, 15], "quiz_category": {'type': 'History', 'id': '4'}})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -201,7 +201,7 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_error_getting_question_to_play_the_quiz(self):
         res = self.client().post('/quizzes',
-                json={"previous_questions": [1, 4, 20, 15], "quiz_category": ""})
+                json={"previous_questions": [1, 4, 20, 15], "quiz_category": {'type': '', 'id': ''}})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
