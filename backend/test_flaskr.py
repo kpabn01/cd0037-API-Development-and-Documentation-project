@@ -91,7 +91,7 @@ class TriviaTestCase(unittest.TestCase):
     #----------------------
     def test_delete_a_question(self):
         # May need to provide a valide question id which is in the database
-        # Once the test is run change the id manually otherwise this part of the test may fail.
+        # Once the test is run change the id manually.
         
         res = self.client().delete('/questions/12')
         data = json.loads(res.data)
@@ -102,15 +102,15 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["deleted"], 12)
         #self.assertTrue(len(data["questions"]))
         #self.assertTrue(data["total_questions"])
-        #self.assertEqual(question, None)
+        self.assertEqual(question, None)
 
     def test_error_deleting_an_inexisting_question(self):
         res = self.client().delete('/questions/999')
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 422)
+        self.assertEqual(res.status_code, 404)
         self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "unprocessable")
+        self.assertEqual(data["message"], "resource not found")
 
     #----------------------
     # TESTING QUESTION CREATION
